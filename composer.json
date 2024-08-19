@@ -45,8 +45,7 @@
     "coverage": "phpunit --coverage-html=coverage",
     "coveralls": "phpunit --coverage-clover build/logs/clover.xml",
     "post-install-cmd": [
-      "@migrate",
-      "@coverage"
+      "@migrate"
     ]
   }
 }
