@@ -10,4 +10,14 @@ class User extends DataLayer
     {
         parent::__construct('users', ['first_name', 'last_name'], 'id', true, $database);
     }
+
+    public function full_name(): string
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function fullNameCamelCase(): string
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
 }

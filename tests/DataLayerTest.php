@@ -9,6 +9,7 @@ use CoffeeCode\DataLayer\DataLayer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use PDOException;
 
 #[CoversClass(DataLayer::class)]
 #[UsesClass(Connect::class)]
@@ -31,6 +32,14 @@ class DataLayerTest extends TestCase
         ];
     }
 
+    public function test_find_with_in_operator()
+    {
+        $model = new Company($this->database_config);
+        $companies = $model->find()->in('user_id', [5, 6])->fetch(true);
+
+        $this->assertEquals(6, $companies[1]->user_id);
+    }
+
     public function test_datalayer_constructor()
     {
         $model = new User($this->database_config);
@@ -44,6 +53,22 @@ class DataLayerTest extends TestCase
         $model->teste = 'teste';
 
         $this->assertEquals('teste', $model->teste);
+    }
+
+    public function test_datalayer_get()
+    {
+        $model = new User($this->database_config);
+        $user = $model->findById(1);
+
+        $this->assertEquals('Robson Leite', $user->full_name);
+    }
+
+    public function test_datalayer_get_in_camel_case()
+    {
+        $model = new User($this->database_config);
+        $user = $model->findById(1);
+
+        $this->assertEquals('Robson Leite', $user->full_name_camel_case);
     }
 
     public function test_datalayer_isset()
@@ -115,21 +140,26 @@ class DataLayerTest extends TestCase
         $this->assertEquals('Omni', $users[1]->first_name);
     }
 
-    public function test_find_with_in_operator()
+    public function test_find_all_group()
     {
-        $model = new User($this->database_config);
-        $users = $model->find()->in('id', [1, 3, 5, 7])->fetch(true);
+        $model = new Company($this->database_config);
+        $companies = $model->find()->group('name')->fetch(true);
 
-        $this->assertEquals('Robson', $users[0]->first_name);
-        $this->assertEquals('Alex Alan', $users[1]->first_name);
-        $this->assertEquals('Wilder', $users[2]->first_name);
-        $this->assertEquals('Juliano', $users[3]->first_name);
+        $this->assertEquals('CoffeeCode', $companies[0]->name);
+        $this->assertEquals('Eugência de Desenvolvimento de Software', $companies[1]->name);
     }
 
     public function test_findbyid()
     {
         $user = (new User($this->database_config))->findById(1);
         $this->assertEquals('Robson', $user->first_name);
+    }
+
+    public function test_fetch_exception()
+    {
+        $params = http_build_query(['names' => 'CoffeeCode']);
+        $company = (new Company($this->database_config))->find('name = :name', $params)->fetch();
+        $this->assertNull($company);
     }
 
     public function test_count()
@@ -142,15 +172,42 @@ class DataLayerTest extends TestCase
     {
         $newUser = new User($this->database_config);
         $newUser->first_name = 'Usuário';
-        $this->assertFalse($newUser->save());
+        $newUser->save();
+        $this->assertInstanceOf(PDOException::class, $newUser->fail());
     }
 
-    public function test_save_create()
+    public function test_save_create_update()
     {
         $newUser = new User($this->database_config);
         $newUser->first_name = 'Usuário';
         $newUser->last_name = 'Teste';
         $this->assertTrue($newUser->save());
+
+        $newUser->last_name = 'Teste 2';
+        $this->assertTrue($newUser->save());
+    }
+
+    public function test_create_fail()
+    {
+        $newUser = new User($this->database_config);
+        $newUser->first_name = 'Usuário';
+        $newUser->last_name = 'Teste';
+        $newUser->teste = 'Teste';
+        $newUser->save();
+        $this->assertInstanceOf(PDOException::class, $newUser->fail());
+    }
+
+    public function test_update_fail()
+    {
+        $newUser = new User($this->database_config);
+        $newUser->first_name = 'Usuário';
+        $newUser->last_name = 'Teste';
+        $newUser->save();
+
+        $newUser->teste = 'Teste';
+        $newUser->save();
+
+        $this->assertInstanceOf(PDOException::class, $newUser->fail());
     }
 
     public function test_destroy()

@@ -33,9 +33,30 @@ final class Companies extends AbstractMigration
                 [
                     'user_id' => 1,
                     'name' => 'CoffeeCode'
-                ], [
+                ],
+                [
                     'user_id' => 2,
                     'name' => 'Eugência de Desenvolvimento de Software'
+                ],
+                [
+                    'user_id' => 3,
+                    'name' => 'CoffeeCode'
+                ],
+                [
+                    'user_id' => 4,
+                    'name' => 'CoffeeCode'
+                ],
+                [
+                    'user_id' => 5,
+                    'name' => 'CoffeeCode'
+                ],
+                [
+                    'user_id' => 6,
+                    'name' => 'CoffeeCode'
+                ],
+                [
+                    'user_id' => 7,
+                    'name' => 'CoffeeCode'
                 ]
             ];
 
