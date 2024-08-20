@@ -219,6 +219,20 @@ class DataLayerTest extends TestCase
         $this->assertTrue($newUser->destroy());
     }
 
+    public function test_delete()
+    {
+        $model = new Company($this->database_config);
+        $this->assertTrue($model->delete('user_id = 7', null));
+    }
+
+    public function test_delete_fail()
+    {
+        $model = new User($this->database_config);
+        $model->delete("nome = 'Teste'", null);
+
+        $this->assertInstanceOf(PDOException::class, $model->fail());
+    }
+
     public function test_destroy_empty_id()
     {
         $newUser = new User($this->database_config);
