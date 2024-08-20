@@ -1,4 +1,4 @@
-FROM php:8.3.10-apache
+FROM php:8.2-apache
 
 RUN apt-get update && \
     apt-get install -y \
@@ -8,7 +8,9 @@ RUN apt-get update && \
 # Necessário para gerar o coverage
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
-ENV XDEBUG_MODE=coverage
+
+RUN echo "xdebug.coverage_enable" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN echo "xdebug.mode=coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
 

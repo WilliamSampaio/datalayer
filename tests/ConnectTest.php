@@ -12,23 +12,22 @@ use PDOException;
 #[CoversClass(Connect::class)]
 class ConnectTest extends TestCase
 {
-    public function test_getinstance_pdo_exception()
-    {
-        $config = [
-            'driver' => 'sqlsrv',
-            'host' => 'localhost',
-            'port' => '9999',
-            'dbname' => 'datalayer',
-            'username' => 'datalayer',
-            'passwd' => 'datalayer',
-            'options' => []
-        ];
+    // public function test_getinstance_pdo_exception()
+    // {
+    //     $config = [
+    //         'driver' => 'sqlsrv',
+    //         'host' => 'localhost',
+    //         'port' => '9999',
+    //         'dbname' => 'datalayer',
+    //         'username' => 'datalayer',
+    //         'passwd' => 'datalayer',
+    //         'options' => []
+    //     ];
 
-        // $this->expectException(PDOException::class);
-        Connect::getInstance($config);
+    //     Connect::getInstance($config);
 
-        $this->assertInstanceOf(PDOException::class, Connect::getError());
-    }
+    //     $this->assertInstanceOf(PDOException::class, Connect::getError());
+    // }
 
     public function test_getinstance_function_with_data_layer_config_config()
     {

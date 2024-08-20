@@ -35,6 +35,26 @@ final class Users extends AbstractMigration
                 [
                     'first_name' => 'William',
                     'last_name' => 'Sampaio'
+                ],
+                [
+                    'first_name' => 'Alex Alan',
+                    'last_name' => 'Nunes'
+                ],
+                [
+                    'first_name' => 'Elton',
+                    'last_name' => 'Mel'
+                ],
+                [
+                    'first_name' => 'Wilder',
+                    'last_name' => 'Amorim'
+                ],
+                [
+                    'first_name' => 'Omni',
+                    'last_name' => 'Species'
+                ],
+                [
+                    'first_name' => 'Juliano',
+                    'last_name' => 'Giacomeli'
                 ]
             ];
 
