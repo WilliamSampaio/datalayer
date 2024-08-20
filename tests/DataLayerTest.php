@@ -32,14 +32,6 @@ class DataLayerTest extends TestCase
         ];
     }
 
-    public function test_find_with_in_operator()
-    {
-        $model = new Company($this->database_config);
-        $companies = $model->find()->in('user_id', [5, 6])->fetch(true);
-
-        $this->assertEquals(6, $companies[1]->user_id);
-    }
-
     public function test_datalayer_constructor()
     {
         $model = new User($this->database_config);
@@ -160,6 +152,26 @@ class DataLayerTest extends TestCase
         $params = http_build_query(['names' => 'CoffeeCode']);
         $company = (new Company($this->database_config))->find('name = :name', $params)->fetch();
         $this->assertNull($company);
+    }
+
+    public function test_find_where_and_in_operator()
+    {
+        $params = http_build_query(['name' => 'CoffeeCode']);
+        $companies = (new Company($this->database_config))
+            ->find('name = :name', $params)
+            ->in('user_id', [4, 5])
+            ->fetch(true);
+
+        $this->assertEquals(4, $companies[0]->user_id);
+        $this->assertEquals(5, $companies[1]->user_id);
+    }
+
+    public function test_find_with_in_operator()
+    {
+        $model = new Company($this->database_config);
+        $companies = $model->find()->in('user_id', [5, 6])->fetch(true);
+
+        $this->assertEquals(6, $companies[1]->user_id);
     }
 
     public function test_count()
