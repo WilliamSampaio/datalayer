@@ -141,6 +141,13 @@ class DataLayerTest extends TestCase
         $this->assertEquals('Eugência de Desenvolvimento de Software', $companies[1]->name);
     }
 
+    public function test_find_all_zero_rows()
+    {
+        $params = http_build_query(['name' => 'Coffee']);
+        $company = (new Company($this->database_config))->find('name = :name', $params)->fetch();
+        $this->assertNull($company);
+    }
+
     public function test_findbyid()
     {
         $user = (new User($this->database_config))->findById(1);
